@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>竞赛管理系统后台</title>
+    <link rel="stylesheet" href="/css/layui.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script type="text/javascript" src="/js/jquery-3.1.0.min.js"></script>
+
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">竞赛管理系统后台</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    admin
+                </a>
+            </li>
+            <li class="layui-nav-item"><a href="/">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">竞赛管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/createContest">竞赛创建</a></dd>
+                        <dd><a href="/admin/contestList">竞赛列表</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/teacherList">教师用户</a></dd>
+                        <dd><a href="/admin/studentList">学生用户</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body" style="padding: 15px;">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;"><font size="4"><b>竞赛管理-学生管理</b></font></div>
+        <div>
+            <form action="#" th:action="@{/admin/searchStudent}" method="post">
+                <span>
+                    <select name="type">
+                        <option value="1" selected="selected">姓名</option>
+                        <option value="2">学院</option>
+                        <option value="3">专业</option>
+                        <option value="4">班级</option>
+                    </select>
+                    &nbsp;&nbsp;
+                    <input type="text" name="keyword"  placeholder="请输入查找内容" class="input-medium">
+                    &nbsp;&nbsp;
+                    <button class="layui-btn" type="submit" >搜索</button>
+                </span>
+            </form>
+        </div>
+        <div>
+            <button type="button" class="layui-btn" id="test1">
+                <i class="layui-icon">&#xe67c;</i>导入学生
+            </button>
+        </div>
+        <div>
+            <table class="btn table">
+                <tr  class="table-secondary">
+                    <th width = "250" style='text-align: center;'>学号</th>
+                    <th width = "250" style='text-align: center;'>姓名</th>
+                    <th width = "250" style='text-align: center;'>性别</th>
+                    <th width = "250" style='text-align: center;'>学院</th>
+                    <th width = "250" style='text-align: center;'>专业</th>
+                    <th width = "250" style='text-align: center;'>班级</th>
+                    <th width = "250" style='text-align: center;'>联系方式</th>
+                    <th width = "250" style='text-align: center;'> </th>
+                    <th width = "250" style='text-align: center;'> </th>
+                </tr>
+                <tr th:each="stu,stat : ${students}">
+                    <td  width = "250"><span th:text="${stu.id}">学号</span></td>
+                    <td  width = "250"><span th:text="${stu.trueName}">姓名</span></td>
+                    <td  width = "250"><span th:text="${stu.gender}">性别</span></td>
+                    <td  width = "250"><span th:text="${stu.department}">学院</span></td>
+                    <td  width = "250"><span th:text="${stu.major}">专业</span></td>
+                    <td  width = "250"><span th:text="${stu.clazz}">班级</span></td>
+                    <td  width = "250"><span th:text="${stu.phone}">联系方式</span></td>
+                    <td  width = "250">
+                        <form action="/admin/studentInfo" method="get">
+                            <button type="submit" class="layui-btn layui-btn-sm">更新信息</button>
+                            <input type="hidden" name="id" th:value="${stu.id}">
+                        </form>
+                    </td>
+                    <td  width = "250">
+                        <form action="/admin/deleteStudent" method="get">
+                            <button type="submit" class="layui-btn layui-btn-sm layui-btn-danger">删除</button>
+                            <input type="hidden" name="id" th:value="${stu.id}">
+                        </form>
+                    </td>
+                </tr>
+            </table>
+
+
+            <div style="text-align: center;">
+                <div class="layui-inline">
+                    <ul class="pagination pagination-sm">
+                        <!-- 首页 -->
+                        <li>
+                            <a th:href="'/admin/studentList?PageNo=1'">首页</a>
+                        </li>
+                        <!-- 上一页 -->
+                        <li th:if="${students.hasPrevious()}">
+                            <a th:href="'/admin/studentList?pageNum=' + ${students.previousPageable().getPageNumber()+1}">&laquo;</a>
+                        </li>
+
+                        <!-- 中间页 -->
+                        <li th:each="count:${#numbers.sequence(1,totalPage)}" th:value="${count}"><a th:href="@{'/admin/studentList?PageNo='+${count}}" th:text="${count}"></a></li>
+
+                        <!-- 下一页 -->
+                        <li th:if="${students.hasNext()}">
+                            <a th:href="'/admin/studentList?PageNo=' + ${students.nextPageable().getPageNumber()+1}">&raquo;</a>
+                        </li>
+
+                        <!-- 尾页 -->
+                        <li>
+                            <a th:href="'/admin/studentList?PageNo=' + ${students.getTotalPages()}">尾页</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+</div>
+</div>>
+<div class="layui-footer">
+    <!-- 底部固定区域 -->
+    © layui.com - 底部固定区域
+</div>
+</div>
+<script src="/js/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+    layui.use('upload', function(){
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#test1' //绑定元素
+            ,url: '/admin/uploadStudent' //上传接口
+            ,accept: 'file'
+            ,done: function(res){
+                layui.use('layer', function(){
+                    var layer = layui.layer;
+                    layer.msg(res.url, {
+                        time: 6000, //6s后自动关闭
+                        icon:1
+                    });
+                });
+            }
+            ,error: function(){
+                //请求异常回调
+            }
+        });
+    });
+</script>
+</body>
+</html>

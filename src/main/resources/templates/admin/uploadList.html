@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>竞赛管理系统后台</title>
+    <link rel="stylesheet" href="/css/layui.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script type="text/javascript" src="/js/jquery-3.1.0.min.js"></script>
+
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">竞赛管理系统后台</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    admin
+                </a>
+            </li>
+            <li class="layui-nav-item"><a href="/">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">竞赛管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/createContest">竞赛创建</a></dd>
+                        <dd><a href="/admin/contestList">竞赛列表</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/teacherList">教师用户</a></dd>
+                        <dd><a href="/admin/studentList">学生用户</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body" style="padding: 15px;">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;"><font size="4"><b>竞赛管理-人员管理</b></font></div>
+        <p th:value="'成功导入'+${uploads.get(0).getType()}+'数据'+${uploads.size()}+'条，具体信息如下：'"/>
+        <div>
+            <table class="btn table">
+                <tr  class="table-secondary">
+                    <th>学工号</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>学院</th>
+                    <th>专业</th>
+                </tr>
+                <tr th:each="stu,stat : ${uploads}">
+                    <td><span th:text="${stu.id}">学号</span></td>
+                    <td><span th:text="${stu.name}">姓名</span></td>
+                    <td><span th:text="${stu.gender}">性别</span></td>
+                    <td><span th:text="${stu.department}">学院</span></td>
+                    <td><span th:text="${stu.major}">专业</span></td>
+                </tr>
+            </table>
+
+        </div>
+    </div>
+</div>
+</body>
+
+</div>
+</div>>
+<div class="layui-footer">
+    <!-- 底部固定区域 -->
+    © layui.com - 底部固定区域
+</div>
+</div>
+<script src="/js/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+</script>
+</body>
+</html>

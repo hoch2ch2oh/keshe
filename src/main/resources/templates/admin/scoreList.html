@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>竞赛管理系统后台</title>
+    <link rel="stylesheet" href="/css/layui.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <script type="text/javascript" src="/js/jquery-3.1.0.min.js"></script>
+
+</head>
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">竞赛管理系统后台</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    admin
+                </a>
+            </li>
+            <li class="layui-nav-item"><a href="/">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">竞赛管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/createContest">竞赛创建</a></dd>
+                        <dd><a href="/admin/contestList">竞赛列表</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/teacherList">教师用户</a></dd>
+                        <dd><a href="/admin/studentList">学生用户</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body" style="padding: 15px;">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;"><font size="4"><b>竞赛管理-报名名单</b></font></div>
+        <form action="#" th:action="@{/admin/scoreList}" th:object="${registers}" method="post">
+            <div>
+                <button class="layui-btn" id="update" type="button">编辑成绩</button>
+                <button class="layui-btn" type="submit" id="save">保存</button>
+                <button class="layui-btn layui-btn-primary layui-border-black" id="cancel" type="reset">取消</button>
+            </div>
+            <div>
+                <table class="btn table">
+                    <tr>
+                        <td style='text-align: center;'>队伍编号</td>
+                        <td style='text-align: center;'>队伍名称</td>
+                        <td style='text-align: center;'>队伍负责人</td>
+                        <td style='text-align: center;'>联系方式</td>
+                        <td style='text-align: center;'>指导老师</td>
+                        <td style='text-align: center;'>比赛成绩</td>
+                    </tr>
+                    <tr th:each="team,stat : ${registers.list}">
+                        <td><span th:text="${team.tid}">队伍编号</span></td>
+                        <td><span th:text="${team.name}">队伍名称</span></td>
+                        <td><span th:text="${team.getStudents().get(0).trueName}">队伍负责人</span></td>
+                        <td><span th:text="${team.phone}">联系方式</span></td>
+                        <td><span th:text="${team.teacher.trueName}">指导老师</span></td>
+                        <td><input class="score" th:value="${team.score}" th:field="*{list[__${stat.index}__].score}" disabled="true"/></td>
+                        <td><input type="hidden" th:value="${team.tid}" th:field="*{list[__${stat.index}__].tid}"/></td>
+                    </tr>
+                    <input type="hidden" name="id" th:value="${id}">
+                </table>
+            <!--
+            因为垃圾数据库而无法分页（
+            <div>
+                <ul class="pagination pagination-sm">
+                    <li><a href="#">&laquo;</a></li>
+                    <li th:each="count:${#numbers.sequence(1,totalPage)}" th:value="${count}" th:text="${count}"><a th:href="@{'//admin/contestList?PageNo=/'+${count}}" th:text="${count}"></a></li>
+                    <li><a href="#">&raquo;</a></li>
+                </ul>
+            </div>
+            -->
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+
+</div>
+</div>>
+<div class="layui-footer">
+    <!-- 底部固定区域 -->
+    © layui.com - 底部固定区域
+</div>
+</div>
+<script src="/js/layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+    });
+
+
+    $(function () {
+        $('#cancel').hide();
+        $('#save').hide();
+        $('#update').bind('click',function(event){
+            $('#cancel').show();
+            $('#save').show();
+            $('#update').hide();
+            $("input[class='score']").attr('disabled',false);
+        });
+        $('#cancel').bind('click',function(event){
+            $('#cancel').hide();
+            $('#save').hide();
+            $('#update').show();
+            $("input[class='score']").attr('disabled',true);
+        });
+    })
+</script>
+</body>
+</html>

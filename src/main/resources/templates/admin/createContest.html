@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ch" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>竞赛管理系统后台</title>
+    <link rel="stylesheet" href="/css/layui.css">
+    <script type="text/javascript" src="/js/laydate.js"></script>
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">竞赛管理系统后台</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
+                    admin
+                </a>
+            </li>
+            <li class="layui-nav-item"><a href="/">退出</a></li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">竞赛管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/createContest">竞赛创建</a></dd>
+                        <dd><a href="/admin/contestList">竞赛列表</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="/admin/teacherList">教师用户</a></dd>
+                        <dd><a href="/admin/studentList">学生用户</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body" style="padding: 15px;">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;"><font size="4"><b>竞赛管理-竞赛创建</b></font></div>
+        <div>
+            <form class="layui-form" action="#" th:action="@{/admin/createContest}" th:object="${contest}" method="post" required="required" >
+                <div class="layui-form-item">
+                    <label class="layui-form-label">竞赛名称</label>
+                    <div class="layui-input-block">
+                        <input type="text" lay-verify="title" autocomplete="off" th:field="*{name}" class="layui-input" required="required" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">举办方</label>
+                    <div class="layui-input-block">
+                        <input type="text" lay-verify="title" autocomplete="off" th:field="*{sponsor}" class="layui-input" required="required" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">人数要求</label>
+                    <div class="layui-input-block">
+                        <input type="text" lay-verify="title" autocomplete="off" th:field="*{numberLimit}" value="10" class="layui-input" required="required" >
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">报名开始时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="test1" lay-verify="datetime" th:field="*{registerStartTime}" placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" class="layui-input" required="required">
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">报名结束时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="test2" lay-verify="datetime" placeholder="yyyy-MM-dd HH:mm:ss"  autocomplete="off" class="layui-input" th:field="*{registerEndTime}" required="required" >
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">比赛开始时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="test3" lay-verify="datetime" th:field="*{contestStartTime}" placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" class="layui-input" required="required" >
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">比赛结束日时间</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="test4" lay-verify="datetime" th:field="*{contestEndTime}" placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" class="layui-input" required="required" >
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">比赛详情</label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入内容" th:field="*{description}" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit="" lay-filter="demo1">提交</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>>
+    </div>
+    <div class="layui-footer">
+        <!-- 底部固定区域 -->
+        © layui.com - 底部固定区域
+    </div>
+</div>
+
+<script>
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#test1', //指定元素
+        type:'datetime'
+
+    });
+    laydate.render({
+        elem: '#test2', //指定元素
+        type:'datetime'
+
+    });
+    laydate.render({
+        elem: '#test3', //指定元素
+        type:'datetime'
+    });
+    laydate.render({
+        elem: '#test4', //指定元素
+        type:'datetime'
+    });
+</script>
+
+</body>
+</html>
